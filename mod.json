@@ -1,0 +1,134 @@
+{
+  "geode": "5.11.2",
+  "gd": {
+    "win": "2.2081"
+  },
+  "id": "lyrics_loop.loop",
+  "name": "Loop Screenshot Studio",
+  "version": "v1.0.0",
+  "developer": "Lyrics_loop",
+  "description": "A configurable in-game screenshot utility with PNG export and clipboard support.",
+  "settings": {
+    "general-title": {
+      "type": "title",
+      "name": "General",
+      "description": "Main controls for Loop Screenshot Studio."
+    },
+    "capture-key": {
+      "type": "keybind",
+      "name": "Screenshot hotkey",
+      "description": "Press this while playing to capture the current Geometry Dash scene.",
+      "default": "Ctrl+Shift+S",
+      "category": "universal"
+    },
+    "save-to-file": {
+      "type": "bool",
+      "name": "Save screenshot to a file",
+      "description": "Save a PNG copy to your selected folder.",
+      "default": true
+    },
+    "copy-to-clipboard": {
+      "type": "bool",
+      "name": "Copy screenshot to clipboard",
+      "description": "Copy the captured image so you can paste it into supported apps.",
+      "default": true
+    },
+    "output-folder": {
+      "type": "folder",
+      "name": "Screenshot folder",
+      "description": "Choose where Loop stores screenshots. Defaults to this mod's save directory.",
+      "default": "{mod_save_dir}/Screenshots"
+    },
+    "resolution-title": {
+      "type": "title",
+      "name": "Resolution & image quality",
+      "description": "Choose the output dimensions and scaling behavior."
+    },
+    "resolution": {
+      "type": "string",
+      "name": "Output resolution",
+      "description": "4K is the default. Output above the game's rendered resolution is upscaled, not newly detailed.",
+      "default": "4K",
+      "one-of": [
+        "Native",
+        "720p",
+        "1080p",
+        "1440p",
+        "4K",
+        "8K",
+        "Custom"
+      ]
+    },
+    "custom-width": {
+      "type": "int",
+      "name": "Custom width",
+      "description": "Used only when Output resolution is Custom.",
+      "default": 3840,
+      "min": 320,
+      "max": 7680,
+      "control": {
+        "slider": false,
+        "arrows": true,
+        "input": true
+      }
+    },
+    "custom-height": {
+      "type": "int",
+      "name": "Custom height",
+      "description": "Used only when Output resolution is Custom.",
+      "default": 2160,
+      "min": 240,
+      "max": 4320,
+      "control": {
+        "slider": false,
+        "arrows": true,
+        "input": true
+      }
+    },
+    "scaling-filter": {
+      "type": "string",
+      "name": "Upscaling filter",
+      "description": "Bicubic is smooth; Bilinear is softer; Nearest preserves hard pixel edges.",
+      "default": "Bicubic",
+      "one-of": [
+        "Bicubic",
+        "Bilinear",
+        "Nearest"
+      ]
+    },
+    "storage-title": {
+      "type": "title",
+      "name": "File organization",
+      "description": "Customize how your screenshots are named and organized."
+    },
+    "filename-prefix": {
+      "type": "string",
+      "name": "Filename prefix",
+      "description": "Example: Loop_2026-11-15_01-30-00.png",
+      "default": "Loop",
+      "filter": "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789-_"
+    },
+    "date-subfolders": {
+      "type": "bool",
+      "name": "Create a folder for each date",
+      "description": "Organize screenshots into YYYY-MM-DD subfolders.",
+      "default": false
+    },
+    "feedback-title": {
+      "type": "title",
+      "name": "Notifications",
+      "description": "Control on-screen feedback after a capture."
+    },
+    "show-notifications": {
+      "type": "bool",
+      "name": "Show capture notifications",
+      "description": "Show a small success or error notification after each screenshot.",
+      "default": true
+    },
+    "technical-title": {
+      "type": "title",
+      "name": "Technical information",
+      "description": "Loop captures the active Cocos2d game scene. It does not take a monitor screenshot. Very large outputs can use substantial memory."
+    }
+  }
+}
