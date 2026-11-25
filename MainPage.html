@@ -1,0 +1,187 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Loop Screenshot Studio</title>
+<style>
+  :root {
+    --bg: #0f1115; --panel: #171a21; --line: #272b35; --text: #e8eaf0; --muted: #9aa1b2;
+    --accent: #6ee7b7; --accent-ink: #062b1d; --code: #0b0d11;
+  }
+  @media (prefers-color-scheme: light) {
+    :root { --bg:#f6f7f9; --panel:#ffffff; --line:#dfe2e8; --text:#161922; --muted:#586072; --accent:#0f9d6e; --accent-ink:#ffffff; --code:#eef0f4; }
+  }
+  * { box-sizing: border-box; }
+  body { margin:0; background:var(--bg); color:var(--text); font:16px/1.6 system-ui,-apple-system,"Segoe UI",Roboto,sans-serif; }
+  main { max-width: 760px; margin: 0 auto; padding: 56px 16px 72px; }
+  .badge { display:inline-flex; align-items:center; gap:8px; padding:4px 12px; border:1px solid var(--line); border-radius:999px; color:var(--muted); font-size:14px; background:var(--panel); }
+  .badge b { color:var(--accent); font-weight:650; }
+  .dot { width:8px; height:8px; border-radius:50%; background:var(--accent); }
+  h1 { font-size:clamp(34px,6vw,52px); line-height:1.1; margin:18px 0 12px; letter-spacing:-0.02em; }
+  .lead { color:var(--muted); font-size:18px; margin:0 0 28px; max-width:56ch; }
+  .actions { display:flex; flex-wrap:wrap; gap:12px; margin-bottom:44px; }
+  a.btn, button.btn { font:inherit; font-weight:600; padding:11px 20px; border-radius:10px; border:1px solid var(--line); background:var(--panel); color:var(--text); text-decoration:none; cursor:pointer; }
+  a.btn.primary { background:var(--accent); color:var(--accent-ink); border-color:var(--accent); }
+  a.btn:hover, button.btn:hover { filter:brightness(1.1); }
+  a.btn:focus-visible, button:focus-visible, summary:focus-visible { outline:2px solid var(--accent); outline-offset:2px; }
+  .grid { display:grid; grid-template-columns:repeat(auto-fit,minmax(210px,1fr)); gap:14px; margin-bottom:40px; }
+  .card { background:var(--panel); border:1px solid var(--line); border-radius:12px; padding:16px 18px; }
+  .card h3 { margin:0 0 4px; font-size:16px; }
+  .card p { margin:0; color:var(--muted); font-size:14.5px; }
+  h2 { font-size:22px; margin:0 0 12px; }
+  .changes { background:var(--panel); border:1px solid var(--line); border-radius:12px; padding:16px 20px; margin-bottom:28px; }
+  .changes h2 { font-size:17px; margin-bottom:6px; }
+  .changes ul { margin:6px 0 0; padding-left:20px; color:var(--muted); }
+  details { background:var(--panel); border:1px solid var(--line); border-radius:12px; }
+  summary { cursor:pointer; padding:16px 20px; font-weight:650; list-style:none; display:flex; justify-content:space-between; align-items:center; }
+  summary::-webkit-details-marker { display:none; }
+  summary::after { content:"+"; font-size:22px; color:var(--accent); line-height:1; }
+  details[open] summary::after { content:"\2212"; }
+  details[open] summary { border-bottom:1px solid var(--line); }
+  .readme { padding:8px 22px 22px; overflow-wrap:anywhere; }
+  .readme h1,.readme h2,.readme h3 { margin:1.2em 0 .4em; line-height:1.25; }
+  .readme h1 { font-size:26px; } .readme h2 { font-size:21px; } .readme h3 { font-size:17px; }
+  .readme p, .readme ul, .readme ol { margin:.6em 0; }
+  .readme a { color:var(--accent); }
+  .readme code { background:var(--code); padding:2px 6px; border-radius:6px; font:14px ui-monospace,Consolas,monospace; }
+  .readme pre { background:var(--code); padding:14px; border-radius:10px; overflow-x:auto; }
+  .readme pre code { padding:0; background:none; }
+  .status { color:var(--muted); padding:16px 0; }
+  footer { margin-top:40px; color:var(--muted); font-size:14px; }
+  footer a { color:var(--accent); }
+</style>
+</head>
+<body>
+<main>
+  <span class="badge"><span class="dot"></span> Latest version <b id="version">…</b></span>
+  <h1>Loop Screenshot Studio</h1>
+  <p class="lead">A configurable in-game screenshot mod for Geometry Dash. Capture the game scene at up to 8K, save a PNG, and copy it straight to your clipboard.</p>
+
+  <div class="actions">
+    <a class="btn primary" href="https://github.com/Jenishpr100/LoopScreenshotStudio" target="_blank" rel="noopener">View on GitHub</a>
+    <a class="btn" href="https://github.com/Jenishpr100/LoopScreenshotStudio/releases" target="_blank" rel="noopener">Releases</a>
+  </div>
+
+  <section class="grid" aria-label="Features">
+    <div class="card"><h3>Hotkey capture</h3><p>Rebindable keybind, default Ctrl+Shift+S.</p></div>
+    <div class="card"><h3>Save &amp; clipboard</h3><p>PNG files, clipboard copy, or both.</p></div>
+    <div class="card"><h3>Resolutions</h3><p>Native, 720p up to 8K, or a custom size.</p></div>
+    <div class="card"><h3>Scaling filters</h3><p>Bicubic, bilinear or nearest-neighbor.</p></div>
+    <div class="card"><h3>Organized files</h3><p>Custom folder, prefix and date subfolders.</p></div>
+    <div class="card"><h3>Scene capture</h3><p>Renders the game itself, not your monitor.</p></div>
+  </section>
+
+  <section class="changes" id="changes" hidden>
+    <h2>What's new in <span id="changes-version"></span></h2>
+    <ul id="changes-list"></ul>
+  </section>
+
+  <details id="readme-box">
+    <summary>Read the README</summary>
+    <div class="readme" id="readme"><div class="status">Loading from GitHub…</div></div>
+  </details>
+
+  <footer>Source and issues on <a href="https://github.com/Jenishpr100/LoopScreenshotStudio" target="_blank" rel="noopener">GitHub</a>. The version, changes and README above are loaded live from the repository.</footer>
+</main>
+
+<script>
+const REPO = "Jenishpr100/LoopScreenshotStudio";
+const RAW = `https://raw.githubusercontent.com/${REPO}/HEAD/`;
+
+const esc = s => s.replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;").replace(/"/g,"&quot;");
+
+function inline(text) {
+  let s = esc(text);
+  s = s.replace(/`([^`]+)`/g, "<code>$1</code>");
+  s = s.replace(/\*\*([^*]+)\*\*/g, "<strong>$1</strong>");
+  s = s.replace(/(^|[^*])\*([^*\s][^*]*)\*/g, "$1<em>$2</em>");
+  s = s.replace(/\[([^\]]+)\]\((https?:\/\/[^)\s]+)\)/g, '<a href="$2" target="_blank" rel="noopener">$1</a>');
+  return s;
+}
+
+// Small, safe Markdown renderer (headings, lists, code, paragraphs, inline).
+function renderMarkdown(md) {
+  const lines = md.replace(/\r/g, "").split("\n");
+  let html = "", list = null, para = [], code = null;
+  const flushPara = () => { if (para.length) { html += `<p>${inline(para.join(" "))}</p>`; para = []; } };
+  const closeList = () => { if (list) { html += `</${list}>`; list = null; } };
+  for (const line of lines) {
+    if (line.trim().startsWith("```")) {
+      if (code === null) { flushPara(); closeList(); code = []; }
+      else { html += `<pre><code>${esc(code.join("\n"))}</code></pre>`; code = null; }
+      continue;
+    }
+    if (code !== null) { code.push(line); continue; }
+    let m;
+    if ((m = line.match(/^(#{1,6})\s+(.*)$/))) {
+      flushPara(); closeList();
+      const n = Math.min(m[1].length, 3);
+      html += `<h${n}>${inline(m[2])}</h${n}>`;
+    } else if ((m = line.match(/^\s*[-*]\s+(.*)$/))) {
+      flushPara();
+      if (list !== "ul") { closeList(); html += "<ul>"; list = "ul"; }
+      html += `<li>${inline(m[1])}</li>`;
+    } else if ((m = line.match(/^\s*\d+\.\s+(.*)$/))) {
+      flushPara();
+      if (list !== "ol") { closeList(); html += "<ol>"; list = "ol"; }
+      html += `<li>${inline(m[1])}</li>`;
+    } else if (!line.trim()) {
+      flushPara(); closeList();
+    } else {
+      closeList(); para.push(line.trim());
+    }
+  }
+  if (code !== null) html += `<pre><code>${esc(code.join("\n"))}</code></pre>`;
+  flushPara(); closeList();
+  return html;
+}
+
+async function getText(path) {
+  const r = await fetch(RAW + path, { cache: "no-cache" });
+  if (!r.ok) throw new Error(path + " " + r.status);
+  return r.text();
+}
+
+// Version = the first "## " heading in changelog.md
+async function loadChangelog() {
+  const v = document.getElementById("version");
+  try {
+    const text = await getText("changelog.md");
+    const lines = text.replace(/\r/g, "").split("\n");
+    const start = lines.findIndex(l => /^##\s+/.test(l));
+    if (start < 0) throw new Error("no version heading");
+    const version = lines[start].replace(/^##\s+/, "").trim();
+    v.textContent = version;
+    const items = [];
+    for (let i = start + 1; i < lines.length && !/^##\s+/.test(lines[i]); i++) {
+      const m = lines[i].match(/^\s*[-*]\s+(.*)$/);
+      if (m) items.push(m[1]);
+    }
+    if (items.length) {
+      document.getElementById("changes-version").textContent = version;
+      document.getElementById("changes-list").innerHTML = items.map(i => `<li>${inline(i)}</li>`).join("");
+      document.getElementById("changes").hidden = false;
+    }
+  } catch (e) {
+    v.textContent = "unavailable";
+  }
+}
+
+let readmeLoaded = false;
+async function loadReadme() {
+  if (readmeLoaded) return;
+  const box = document.getElementById("readme");
+  try {
+    box.innerHTML = renderMarkdown(await getText("README.md"));
+    readmeLoaded = true;
+  } catch (e) {
+    box.innerHTML = `<div class="status">Couldn't load the README right now. <a href="https://github.com/${REPO}#readme" target="_blank" rel="noopener" style="color:var(--accent)">Read it on GitHub</a>.</div>`;
+  }
+}
+
+document.getElementById("readme-box").addEventListener("toggle", e => { if (e.target.open) loadReadme(); });
+loadChangelog();
+</script>
+</body>
+</html>
