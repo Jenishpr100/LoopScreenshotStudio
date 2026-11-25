@@ -1,13 +1,11 @@
-# Loop Screenshot 
+# Loop Screenshot Studio
 
-# Random info
-- Vibe coded!
-- Do not support this 
-- Helps you screenshot stuff 
-- I used Luna 6-High and Sonnet 5.5 at medium 
-- Yes, the logo is also AI generated.
+Windows-only Geometry Dash / Geode screenshot mod.
 
-Windows-focused Geometry Dash / Geode screenshot mod.
+## Random info
+- Vibe coded! Do not support this.
+- Made with Luna 6-High and Sonnet 5.5 at medium.
+- The logo is AI generated too.
 
 ## Features
 - Global configurable screenshot keybind (default Ctrl+Shift+S)
@@ -18,11 +16,15 @@ Windows-focused Geometry Dash / Geode screenshot mod.
 - Custom output folder, filename prefix, and optional date subfolders
 - Optional success/error notifications
 
-## Important resolution note
-The mod renders the active Geometry Dash Cocos scene into an offscreen render texture. Output sizes above the game's actual rendered dimensions are upscaled. This changes the pixel dimensions but cannot recreate details that were not present in the original render.
+## Resolution note
+The mod renders the active Geometry Dash scene into an offscreen render texture.
+Output sizes above the game's rendered size are upscaled: the pixel count changes,
+but no new detail appears.
 
 ## Build
-Use Geode SDK 5.11.2 (mod.json must match the installed SDK exactly), GD 2.2081:
-`geode build --ninja`
+Requires Geode CLI 4.0.0+, Geode SDK 6.0.0 (the `geode` field in `mod.json`
+must match the installed SDK exactly) and Geometry Dash 2.2091.
 
-This project has not been compiled in this environment. Build it locally and share any compiler output so SDK-specific signature differences can be corrected.
+    geode sdk update            # or: git checkout v6.0.0 inside %GEODE_SDK%
+    geode sdk install-binaries
+    geode build --ninja

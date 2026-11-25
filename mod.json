@@ -1,13 +1,18 @@
 {
-  "geode": "5.11.2",
+  "geode": "6.0.0",
   "gd": {
-    "win": "2.2081"
+    "win": "2.2091"
   },
   "id": "lyrics_loop.loop",
   "name": "Loop Screenshot Studio",
-  "version": "v1.0.0",
+  "version": "v1.0.1",
   "developer": "Lyrics_loop",
   "description": "A configurable in-game screenshot utility with PNG export and clipboard support.",
+  "links": {
+    "homepage": "https://jenishpr100.github.io/LoopScreenshotStudio/MainPage.html",
+    "source": "https://github.com/Jenishpr100/LoopScreenshotStudio",
+    "community": "https://discord.gg/ygD4nqEksY"
+  },
   "settings": {
     "general-title": {
       "type": "title",

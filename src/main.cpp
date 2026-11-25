@@ -13,6 +13,14 @@
 #include <memory>
 #include <string>
 #include <vector>
+#include <type_traits>
+
+// Geode v6 replaced std::filesystem::path with asp::fs::Path in its API
+// (Mod::getSaveDir(), path settings...). This header gives us toStdPath().
+// On Geode v5 the header does not exist, so the same file builds on both.
+#if __has_include(<asp/fs/std.hpp>)
+    #include <asp/fs/std.hpp>
+#endif
 
 #ifdef _WIN32
     #ifndef NOMINMAX
@@ -55,10 +63,32 @@ namespace LoopShot {
         }
     }
 
+    // The path type Geode itself uses (std::filesystem::path on v5,
+    // asp::fs::Path on v6). Path settings use the same type as getSaveDir().
+    using GeodePath = std::remove_cvref_t<decltype(Mod::get()->getSaveDir())>;
+
+    // Convert whatever Geode gives us into a std::filesystem::path so the
+    // rest of this file (create_directories, ifstream, GDI+) stays unchanged.
+    // Must be a template: in a plain function the discarded `if constexpr`
+    // branch is still compiled and fails. On v6, toStdPath() returns a Result,
+    // so an error falls back to an empty path (callers handle that).
+    template <class P>
+    static std::filesystem::path toStd(P const& path) {
+        if constexpr (std::is_same_v<P, std::filesystem::path>) {
+            return path;
+        } else {
+            return path.toStdPath().unwrapOr(std::filesystem::path{});
+        }
+    }
+
+    static std::filesystem::path getSaveDir() {
+        return toStd(Mod::get()->getSaveDir());
+    }
+
     static std::filesystem::path getOutputFolder() {
-        auto folder = Mod::get()->getSettingValue<std::filesystem::path>("output-folder");
+        auto folder = toStd(Mod::get()->getSettingValue<GeodePath>("output-folder"));
         if (folder.empty())
-            folder = Mod::get()->getSaveDir() / "Screenshots";
+            folder = getSaveDir() / "Screenshots";
         return folder;
     }
 
@@ -361,7 +391,7 @@ namespace LoopShot {
             // The PNG is also written when only the clipboard is enabled, so a
             // file can be pasted (into Discord, Explorer...), not just an image.
             if (saveFile || copyClipboard) {
-                auto folder = saveFile ? getOutputFolder() : Mod::get()->getSaveDir();
+                std::filesystem::path folder = saveFile ? getOutputFolder() : getSaveDir();
                 if (saveFile && Mod::get()->getSettingValue<bool>("date-subfolders")) {
                     auto tm = localTime();
                     char date[16]{};
@@ -411,10 +441,13 @@ namespace LoopShot {
 $on_game(Loaded) {
     listenForKeybindSettingPresses(
         "capture-key",
-        [](Keybind const&, bool down, bool repeat, double) {
+        [](Keybind const&, bool down, bool repeat, double) -> bool {
             if (down && !repeat) {
                 LoopShot::captureGame();
             }
+            // Geode v6 keybind listeners return bool (v5 ignored it). Returning
+            // false means "I did not consume this key", so other mods still see it.
+            return false;
         }
     );
 }
